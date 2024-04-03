@@ -1,4 +1,5 @@
-import { ChatLogType } from "@/types";
+import { Message } from "@/types";
+// import { ChatLogType } from "@/types";
 // type ChatLogType = {
 //     role: string;
 //     content: string;
@@ -6,7 +7,8 @@ import { ChatLogType } from "@/types";
 
 type Props = {
     prompt: string;
-    history?: ChatLogType[];
+    history?: Message[];
+    // history?: ChatLogType[];
     options?: {
         temperature?: number;
         max_tokens?: number;

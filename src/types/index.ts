@@ -1,10 +1,21 @@
-export type ChatLogType = {
-    role: string;
+export type Role = 'user' | 'assistant' | 'system';
+
+export type Message = {
+    role: Role;
     content: string;
 };
-
-export type ChatLogsType = ChatLogType[];
+// export type ChatLogType = {
+//     role: Role;
+//     content: string;
+// };
+export type MessageList = Message[];
+// export type ChatLogsType = Message[];
+// export type ChatLogsType = ChatLogType[];
 
 export type ChatLogsStorageType = {
-    [key: string]: ChatLogsType
+    [key: string]: MessageList
 };
+
+// export type ChatLogsStorageType = {
+//     [key: string]: ChatLogsType
+// };

@@ -1,4 +1,5 @@
-import { ChatLogsStorageType, ChatLogsType } from "@/types";
+import { ChatLogsStorageType, MessageList } from "@/types";
+// import { ChatLogsStorageType, ChatLogsType } from "@/types";
 import { getLocal, setLocal } from "./storage";
 
 // save ChatLogs
@@ -21,11 +22,17 @@ export const getChatLogs = (id: string) => {
 };
 
 
-export const updateChatLogs = (id: string, log: ChatLogsType) => {
+export const updateChatLogs = (id: string, log: MessageList) => {
     const logs = getChatLogsContainer();
     logs[id] = log;
     setLocal(CHAT_LOGS_KEY, logs);
 };
+
+// export const updateChatLogs = (id: string, log: ChatLogsType) => {
+//     const logs = getChatLogsContainer();
+//     logs[id] = log;
+//     setLocal(CHAT_LOGS_KEY, logs);
+// };
 
 
 export const clearChatLogs = (id: string) => {
