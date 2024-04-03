@@ -43,11 +43,11 @@ export const Chat = () => {
 
     const getAIResp = async () => {
 
-        if (prompt.trim() === '') {
+        if (prompt.trim() === '' || prompt.length < 6) {
             alert('Please input valid prompt.');
             return;
         }
-        
+
         setLoading(true);
 
         const list = [
@@ -61,7 +61,8 @@ export const Chat = () => {
         setChatLogs(list);
 
         const resp = await getCompletion({
-            prompt
+            prompt,
+            history: chatList.slice(-4)
         });
 
         setPrompt('');
