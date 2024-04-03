@@ -41,10 +41,16 @@ type Actions = {
 
 class ChatService {
     
+    // abort
+    private controller: AbortController;
+
     private static instance: ChatService;
     // callback1
     public actions?: Actions;
-    // callback2
+    // constructor
+    private constructor() {
+        this.controller = new AbortController();
+    }
 
     public static getInstance(): ChatService {
         if (!ChatService.instance) {
@@ -67,7 +73,8 @@ class ChatService {
                     prompt,
                     history,
                     options
-                })
+                }),
+                signal: this.controller.signal
             });
             const data = response.body;
             if (!data) {
@@ -87,12 +94,15 @@ class ChatService {
 
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
-
         } catch (error) {
             
         } finally {
             this.actions?.onCompleted?.(suggestion);
+            this.controller = new AbortController();
         }
+    }
+    public cancel() {
+        this.controller.abort();
     }
 }
 

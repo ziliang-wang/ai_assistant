@@ -5,7 +5,7 @@ import { clearChatLogs, getChatLogs, updateChatLogs } from "@/utils/ChatStorage"
 import chatService from "@/utils/chatServe";
 // import { getCompletion } from "@/utils/getCompletion";
 import { Textarea, ActionIcon } from "@mantine/core";
-import { IconSend, IconEraser } from "@tabler/icons-react";
+import { IconSend, IconEraser, IconSendOff } from "@tabler/icons-react";
 // import clsx from "clsx";
 
 const LOCAL_KEY = 'ai_demo';
@@ -125,10 +125,16 @@ export const Chat = () => {
     //     setLoading(false);
     // };
     const onSubmit = () => {
+
+        if (loading) {
+            return chatService.cancel();
+        }
+
         if (prompt.trim() === '' || prompt.length < 5) {
             alert('Please input valid prompt.');
             return;
         }
+
         let list: MessageList = [
             ...chatList,
             {
@@ -190,8 +196,12 @@ export const Chat = () => {
                     onKeyDown={onKeyDown}
                 >
                 </Textarea>
-                <ActionIcon className="ml-2" onClick={ onSubmit } loading={loading}>
-                    <IconSend size={50}></IconSend>
+                {/* <ActionIcon className="ml-2" onClick={ onSubmit } loading={loading}> */}
+                <ActionIcon className="ml-2" onClick={ onSubmit }>
+                    {
+                        loading ? <IconSendOff /> : <IconSend size={50} />
+                    }
+                    {/* <IconSend size={50}></IconSend> */}
                 </ActionIcon>
                 {/* <ActionIcon className="ml-2" onClick={getAIResp} loading={loading}>
                     <IconSend size={50}></IconSend>

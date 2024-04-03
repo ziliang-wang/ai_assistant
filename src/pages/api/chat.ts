@@ -61,7 +61,7 @@ export default async function handler(
 }
 
 const requestStream = async (payload: StreamPayLoad) => {
-  const counter = 0;
+  let counter = 0;
   const resp = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -70,6 +70,10 @@ const requestStream = async (payload: StreamPayLoad) => {
     method: 'POST',
     body: JSON.stringify(payload)
   })
+  // try error 若有錯務， 直接返回
+  if (resp.status !== 200) {
+    return resp.body;
+  }
   return createStream(resp, counter);
 };
 
