@@ -9,6 +9,15 @@ export type Message = {
 //     content: string;
 // };
 export type MessageList = Message[];
+// 多個session
+export type Session = {
+    name: string;
+    id: string;
+};
+
+export type SessionList = Session[];
+
+
 // export type ChatLogsType = Message[];
 // export type ChatLogsType = ChatLogType[];
 
