@@ -1,15 +1,18 @@
+import { useEffect, useState, KeyboardEvent } from "react";
 import { ChatLogsType } from "@/types";
-import { getChatLogs, updateChatLogs } from "@/utils/ChatStorage";
+import { clearChatLogs, getChatLogs, updateChatLogs } from "@/utils/ChatStorage";
 import { getCompletion } from "@/utils/getCompletion";
-import { Textarea, Button } from "@mantine/core";
+import { Textarea, ActionIcon } from "@mantine/core";
+import { IconSend, IconEraser } from "@tabler/icons-react";
 // import clsx from "clsx";
-import { useEffect, useState } from "react";
 
 const LOCAL_KEY = 'ai_demo';
 
 export const Chat = () => {
 
     const [ prompt, setPrompt ] = useState('');
+
+    const [ loading, setLoading ] = useState(false);
 
     const [ completion, setCompletion ] = useState('');
 
@@ -20,12 +23,33 @@ export const Chat = () => {
         setChatList(logs);
     }, []);
 
+    const onClear = () => {
+        clearChatLogs(LOCAL_KEY);
+        setChatList([]);
+    };
+
+    const onKeyDown = (e:KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            getAIResp();
+        }
+        
+    };
+
     const setChatLogs = (logs: ChatLogsType) => {
         setChatList(logs);
         updateChatLogs(LOCAL_KEY, logs);
     };
 
     const getAIResp = async () => {
+
+        if (prompt.trim() === '') {
+            alert('Please input valid prompt.');
+            return;
+        }
+        
+        setLoading(true);
+
         const list = [
             ...chatList,
             {
@@ -38,7 +62,9 @@ export const Chat = () => {
 
         const resp = await getCompletion({
             prompt
-        })
+        });
+
+        setPrompt('');
         setCompletion(resp.content);
         // console.log(resp);
         setChatLogs([
@@ -48,11 +74,13 @@ export const Chat = () => {
                 content: resp.content
             }
         ]);
+
+        setLoading(false);
     };
 
     return (
     <div className="h-screen items-center flex flex-col">
-        <div className="w-3/5 flex-col h-[calc(100vh-10rem]) overflow-y-auto rounded-sm">
+        <div className="w-3/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto rounded-sm">
             {
                 chatList.map((item, idx) => {
                     return (
@@ -83,14 +111,22 @@ export const Chat = () => {
             }
         </div>
         <div className="flex items-center w-3/5 mt-6">
+            <ActionIcon className="mr-2" onClick={ onClear } disabled={ loading }>
+                <IconEraser size={50}></IconEraser>
+            </ActionIcon>
             <Textarea
+                disabled={ loading }
                 placeholder="Enter your prompt" 
                 className="w-full" 
                 value={ prompt }
                 onChange={ (e) => { setPrompt(e.target.value); } }
+                onKeyDown={ onKeyDown }
             >
             </Textarea>
-            <Button onClick={ getAIResp }>Send</Button>
+            <ActionIcon className="ml-2" onClick={ getAIResp } loading={ loading }>
+                <IconSend size={50}></IconSend>
+            </ActionIcon>
+            {/* <Button onClick={ getAIResp }>Send</Button> */}
         </div>
     </div>
     );
