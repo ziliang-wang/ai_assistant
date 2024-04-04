@@ -4,6 +4,7 @@ import * as chatStorage from '@/utils/ChatStorage';
 import { useMantineColorScheme, ActionIcon } from "@mantine/core";
 import { IconTrash, IconMessagePlus } from "@tabler/icons-react";
 import clsx from "clsx";
+import { EditableText } from "../EditableText";
 
 type Props = {
     sessionId: string;
@@ -66,6 +67,11 @@ export const Session = ({ sessionId, onChange, className }: Props) => {
         setSessionList(list);
     };
 
+    const updateSession = (name: string) => {
+        let newSessionList = chatStorage.updateSession(sessionId, { name });
+        setSessionList(newSessionList);
+    };
+
     return (
         // className="h-screen w-64 flex flex-col px-2 bg-slate-500"
         <div
@@ -99,7 +105,12 @@ export const Session = ({ sessionId, onChange, className }: Props) => {
                                 onClick={() => { onChange(id); }}
                                 className={ `${generateItemClasses(id, sessionId, colorScheme)}` }
                             >
-                                <div className="font-bold">{ name }</div>
+                                <EditableText 
+                                    text={ name } 
+                                    onSave={() => { updateSession(name); }}
+                                >
+                                </EditableText>
+                                {/* <div className="font-bold">{ name }</div> */}
 
                                 { 
                                     sessionList.length > 1 ? 
