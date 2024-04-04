@@ -28,3 +28,16 @@ export type ChatLogsStorageType = {
 // export type ChatLogsStorageType = {
 //     [key: string]: ChatLogsType
 // };
+// assistant module
+export type Assistant = {
+    id: string;
+    name: string;
+    prompt: string;
+    description?: string;
+    temperature?: number;
+    max_log: number;
+    max_tokens: number;
+};
+
+
+export type AssistantList = Assistant[]; 
