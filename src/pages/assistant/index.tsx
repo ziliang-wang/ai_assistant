@@ -8,6 +8,7 @@ import { ASSISTANT_INIT } from "@/utils/constant";
 import Link from "next/link";
 import { ActionIcon, Card, Text, Group, Drawer, Badge } from "@mantine/core";
 import { IconChevronLeft, IconUserPlus, IconPencil, IconUser } from "@tabler/icons-react";
+import { AssistantConfig } from "@/components/AssistantConfig";
 
 
 const showNotification = (message: string) => {
@@ -135,7 +136,11 @@ const Assistant: NextPage = () => {
              </div>
              {/* drawer */}
              <Drawer opened={opened} onClose={drawerHandler.close} size="lg" position="right">
-                edit form
+                <AssistantConfig 
+                    assistant={editAssistant!}
+                    save={saveAssistant}
+                    remove={removeAssistant}
+                />
              </Drawer>
         </div>
     );
