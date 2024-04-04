@@ -13,7 +13,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ColorSchemeProvider 
-      colorScheme="dark"
+      colorScheme={ colorScheme }
+      // colorScheme="dark"
       toggleColorScheme={ toggleColorScheme }
     >
       <MantineProvider 

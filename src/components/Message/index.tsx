@@ -176,8 +176,8 @@ export const Message = ({sessionId}: Props) => {
     };
 
     return (
-        <div className="h-screen items-center flex flex-col">
-            <div className="w-3/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto rounded-sm">
+        <div className="h-screen items-center flex flex-col w-full bg-slate-200">
+            <div className="w-3/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto scrollbar-none rounded-sm">
                 {
                     message.map((item, idx) => {
                         return (
