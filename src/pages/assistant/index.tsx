@@ -76,7 +76,7 @@ const Assistant: NextPage = () => {
 
     return (
         <div className="h-screen flex flex-col">
-            {/* header */}
+             {/* header */}
              <div className="flex justify-between p-4 shadow-sm">
                 {/* left */}
                 <Link href='/'>
@@ -94,7 +94,7 @@ const Assistant: NextPage = () => {
                 </ActionIcon>
              </div>
              {/* body */}
-             <div className="flex gap-8 flex-wrap p-4 overflow-y-auto">
+             <div className="flex gap-8 flex-wrap p-4 overflow-y-auto mx-auto">
                 {
                     assistantList.map((item) => {
                         return (
