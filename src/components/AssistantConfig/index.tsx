@@ -37,8 +37,8 @@ export const AssistantConfig = ({ assistant, save, remove }: Props) => {
     };
 
     return (
-        <div className="w-full flex justify-center">
-            <form onSubmit={ onSubmit } className="w-full flex flex-col gap-4">
+        <div className="w-full flex justify-center -mt-1">
+            <form onSubmit={ onSubmit } className="w-full flex flex-col gap-3">
                 <Wrapper label="名稱" description="助理名稱">
                     <Input 
                         type="text" 
@@ -103,7 +103,7 @@ export const AssistantConfig = ({ assistant, save, remove }: Props) => {
                     />
                 </Wrapper>
 
-                <div className="mt-4 flex justify-around">
+                <div className="mt-2 flex items-center justify-around">
                     <Button type="submit" leftIcon={<IconDeviceFloppy size="1.2rem" />}>
                         Save
                     </Button>
