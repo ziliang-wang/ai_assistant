@@ -40,4 +40,7 @@ export type Assistant = {
 };
 
 
-export type AssistantList = Assistant[]; 
+export type AssistantList = Assistant[];
+
+
+export type EditAssistant = Omit<Assistant, 'id'> & Partial<Pick<Assistant, 'id'>>;
