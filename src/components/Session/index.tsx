@@ -5,6 +5,7 @@ import { useMantineColorScheme, ActionIcon } from "@mantine/core";
 import { IconTrash, IconMessagePlus } from "@tabler/icons-react";
 import clsx from "clsx";
 import { EditableText } from "../EditableText";
+import assistantStore from "@/utils/assistantStore";
 
 type Props = {
     sessionId: string;
@@ -50,8 +51,10 @@ export const Session = ({ sessionId, onChange, className }: Props) => {
 
     const createSession = () => {
         // const list = chatStorage.getSessionStore();
+        const assistantList = assistantStore.getList();
         const newSession = {
             name: `session-${sessionList.length + 1}`,
+            assistant: assistantList[0].id,
             id: Date.now().toString()
         };
         onChange(newSession.id);
