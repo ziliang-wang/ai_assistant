@@ -134,6 +134,10 @@ export const Session = ({ sessionId, onChange, className }: Props) => {
                     })
                 }
             </div>
+            {/* <h6 className="bg-blue-200"></h6> */}
+            <ul className="text-white">
+                <li>雙擊任一會話可修改會話名稱，Enter後保存</li>
+            </ul>
         </div>
     );
 }
