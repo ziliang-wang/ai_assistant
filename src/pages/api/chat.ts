@@ -66,8 +66,8 @@ export default async function handler(
 
 const requestStream = async (payload: StreamPayLoad) => {
   let counter = 0;
-  const resp = await fetch('https://api.xty.app/v1/chat/completions', {
-  // const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+  // const resp = await fetch('https://api.xty.app/v1/chat/completions', {
+  const resp = await fetch('https://api.openai.com/v1/chat/completions', {
     headers: {
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       'Content-Type': 'application/json'
