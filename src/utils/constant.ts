@@ -12,3 +12,7 @@ export const ASSISTANT_INIT = [
     }
 ];
 
+
+export const MAX_TOKEN = 1000;
+export const TEMPERATURE = 0.8;
+

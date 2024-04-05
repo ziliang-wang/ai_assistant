@@ -1,5 +1,5 @@
 import { useEffect, useState, KeyboardEvent } from "react";
-import { MessageList } from "@/types";
+import { Assistant, MessageList } from "@/types";
 // import { ChatLogsType } from "@/types";
 import * as chatStorage from "@/utils/ChatStorage";
 // import { clearMessage, getMessage, updateMessage } from "@/utils/ChatStorage";
@@ -10,6 +10,7 @@ import { Textarea, ActionIcon, Button, Popover } from "@mantine/core";
 import { IconSend, IconEraser, IconSendOff, IconDotsVertical } from "@tabler/icons-react";
 import Link from "next/link";
 import clsx from "clsx";
+import { AssistantSelect } from "../AssistantSelect";
 // import clsx from "clsx";
 
 // const sessionId = 'ai_demo';
@@ -29,6 +30,7 @@ export const Message = ({sessionId}: Props) => {
     const [message, setMessage] = useState<MessageList>([]);
     // const [chatList, setChatList] = useState<MessageList>([]);
     // const [ chatList, setChatList ] = useState<ChatLogsType>([]);
+    const [ assistant, setAssistant ] = useState<Assistant>();
 
     const updateMessage = (msg: MessageList) => {
         setMessage(msg);
@@ -45,6 +47,8 @@ export const Message = ({sessionId}: Props) => {
 
 
     useEffect(() => {
+        const session = chatStorage.getSession(sessionId);
+        setAssistant(session?.assistant);
         const msg = chatStorage.getMessage(sessionId);
         // const logs = getMessage(sessionId);
         // const logs = getChatLogs(sessionId);
@@ -55,6 +59,14 @@ export const Message = ({sessionId}: Props) => {
         }
 
     }, [sessionId]);
+
+    const onAssistantChange = (assistant: Assistant) => {
+        setAssistant(assistant);
+        chatStorage.updateSession(sessionId, {
+            assistant: assistant.id,
+
+        });
+    }
 
     const onClear = () => {
         // chatStorage.clearMessage(sessionId);
@@ -172,7 +184,8 @@ export const Message = ({sessionId}: Props) => {
         setLoading(true);
         chatService.getStream({
             prompt,
-            history: list.slice(-6)
+            options: assistant,
+            history: list.slice(-assistant?.max_log!)
         });
         setPrompt('');
     };
@@ -206,8 +219,13 @@ export const Message = ({sessionId}: Props) => {
                         <Link href="/assistant">助理管理</Link>
                     </Popover.Dropdown>
                 </Popover>
+                {/* center */}
+                {/* <div>Welcome to Jomunn AI</div> */}
                 {/* right */}
-                <div>選擇助理</div>
+                <AssistantSelect
+                    value={ assistant?.id! }
+                    onChange={ onAssistantChange } 
+                ></AssistantSelect>
             </div>
             {/* message content */}
             <div className="w-3/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto scrollbar-none rounded-sm">

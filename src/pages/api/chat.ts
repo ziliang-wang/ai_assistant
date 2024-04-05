@@ -3,6 +3,7 @@ import { MessageList } from '@/types';
 // import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextRequest } from 'next/server';
 import { createParser, ParsedEvent, ReconnectInterval } from 'eventsource-parser'; 
+import { MAX_TOKEN, TEMPERATURE } from '@/utils/constant';
 // type Data = {
 //   name: string
 // }
@@ -23,6 +24,7 @@ export default async function handler(
 ) {
 
   const { prompt, history=[], options={} } = await req.json();
+  const { max_tokens, temperature } = options;
   // const { prompt, history=[], options={} } = await req.body;
 
   const data = {
@@ -30,7 +32,7 @@ export default async function handler(
     messages: [
       {
         role: 'system',
-        content: 'you are ai assistant'
+        content: options.prompt
       },
       ...history,
       {
@@ -39,7 +41,9 @@ export default async function handler(
       }
     ],
     stream: true,
-    ...options
+    // ...options,
+    temperature: +temperature || TEMPERATURE,
+    max_tokens: +max_tokens || MAX_TOKEN
   };
 
   const strem = await requestStream(data);
