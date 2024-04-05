@@ -7,7 +7,7 @@ import * as chatStorage from "@/utils/ChatStorage";
 import chatService from "@/utils/chatServe";
 // import { getCompletion } from "@/utils/getCompletion";
 import { Textarea, ActionIcon, Button, Popover } from "@mantine/core";
-import { IconSend, IconEraser, IconSendOff, IconDotsVertical } from "@tabler/icons-react";
+import { IconSend, IconEraser, IconSendOff, IconDotsVertical, IconUser, IconAlien } from "@tabler/icons-react";
 import Link from "next/link";
 import clsx from "clsx";
 import { AssistantSelect } from "../AssistantSelect";
@@ -200,24 +200,26 @@ export const Message = ({sessionId}: Props) => {
                     'items-center',
                     'p-4',
                     'shadow-sm',
-                    'h-[6rem]'
+                    'h-[4rem]'
                 ])}
             >
                 {/* left */}
                 <Popover width={100} position="bottom" withArrow shadow="sm">
                     <Popover.Target>
+                    <Link href="/assistant">
                         <Button 
                             size="sm" 
                             variant="subtle" 
                             className="px-1"
                             rightIcon={ <IconDotsVertical size="1rem" /> }
                         >
-                            Jomunn AI 助理
+                            Jomunn AI 助理管理
                         </Button>
+                    </Link>
                     </Popover.Target>
-                    <Popover.Dropdown>
+                    {/* <Popover.Dropdown>
                         <Link href="/assistant">助理管理</Link>
-                    </Popover.Dropdown>
+                    </Popover.Dropdown> */}
                 </Popover>
                 {/* center */}
                 {/* <div>Welcome to Jomunn AI</div> */}
@@ -228,14 +230,14 @@ export const Message = ({sessionId}: Props) => {
                 ></AssistantSelect>
             </div>
             {/* message content */}
-            <div className="w-3/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto scrollbar-none rounded-sm">
+            <div className="mx-auto w-4/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto scrollbar-none rounded-sm">
                 {
                     message.map((item, idx) => {
                         return (
                             <div key={`${item.role}-${idx}`}
                                 style={
                                     {
-                                        display: item.role === 'user' ? 'flex' : '',
+                                        display: item.role === 'user' ? 'flex' : 'block',
                                         flexDirection: item.role === 'user' ? 'column' : 'column',
                                         alignItems: item.role === 'user' ? 'flex-end' : 'flex-start',
                                         marginTop: '1rem',
@@ -249,16 +251,25 @@ export const Message = ({sessionId}: Props) => {
                             //         'items-end': item.role === 'user'
                             //         },'mt-4')}
                             >
-                                <div>{item.role}</div>
-                                <div className="rounded-md py-2 mt-1 w-full md:w-[50%] bg-blue-200">
-                                    {item.content}
+                                <div className="flex items-center">
+                                    <div 
+                                        style={{ 
+                                                order: item.role == 'user' ? 1 : 0, 
+                                                marginRight: item.role == 'assistant' ? '.5rem' : 0,
+                                                marginLeft: item.role == 'user' ? '.5rem' : 0
+                                            }}>
+                                        {item.role == 'assistant' ? <IconAlien /> : <IconUser />}
+                                    </div>
+                                    <div  style={{ width: item.role == 'assistant' ? '35%' : '90%'  }} className="rounded-md py-2 mt-1 px-2 w-full bg-blue-200">
+                                        {item.content}
+                                    </div>
                                 </div>
                             </div>
                         );
                     })
                 }
             </div>
-            <div className="flex items-center w-3/5 mt-6">
+            <div className="mx-auto flex items-center w-4/5 mt-6">
                 <ActionIcon className="mr-2" onClick={onClear} disabled={loading}>
                     <IconEraser size={50}></IconEraser>
                 </ActionIcon>
