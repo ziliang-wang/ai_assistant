@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Assistant, AssistantList } from "@/types";
 import assistantStore from "@/utils/assistantStore";
-import { Divider, Select } from "@mantine/core";
+import { Select } from "@mantine/core";
 
 type Props = {
     value: string;
