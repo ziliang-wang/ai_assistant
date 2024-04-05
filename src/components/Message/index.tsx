@@ -11,6 +11,18 @@ import { IconSend, IconEraser, IconSendOff, IconDotsVertical, IconUser, IconAlie
 import Link from "next/link";
 import clsx from "clsx";
 import { AssistantSelect } from "../AssistantSelect";
+import { notifications } from "@mantine/notifications";
+
+const showNotification = (message: string) => {
+    notifications.show({
+        id: 'Alert',
+        title: 'Alert',
+        message,
+        color: 'red',
+        autoClose: 3000
+    });
+};
+
 // import clsx from "clsx";
 
 // const sessionId = 'ai_demo';
@@ -169,7 +181,8 @@ export const Message = ({sessionId}: Props) => {
         }
 
         if (prompt.trim() === '' || prompt.length < 5) {
-            alert('Please input valid prompt.');
+            // alert('Please input valid prompt.');
+            showNotification('至少說個Hello吧，字數太少就沒什麼意思了啦');
             return;
         }
 
