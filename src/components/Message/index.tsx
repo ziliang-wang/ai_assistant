@@ -6,8 +6,10 @@ import * as chatStorage from "@/utils/ChatStorage";
 // import { clearChatLogs, getChatLogs, updateChatLogs } from "@/utils/ChatStorage";
 import chatService from "@/utils/chatServe";
 // import { getCompletion } from "@/utils/getCompletion";
-import { Textarea, ActionIcon } from "@mantine/core";
-import { IconSend, IconEraser, IconSendOff } from "@tabler/icons-react";
+import { Textarea, ActionIcon, Button, Popover } from "@mantine/core";
+import { IconSend, IconEraser, IconSendOff, IconDotsVertical } from "@tabler/icons-react";
+import Link from "next/link";
+import clsx from "clsx";
 // import clsx from "clsx";
 
 // const sessionId = 'ai_demo';
@@ -176,7 +178,38 @@ export const Message = ({sessionId}: Props) => {
     };
 
     return (
-        <div className="h-screen items-center flex flex-col w-full bg-slate-200">
+        <div className="h-screen flex flex-col w-full bg-slate-200">
+            {/* header */}
+            <div 
+                className={clsx([
+                    'flex',
+                    'justify-between',
+                    'items-center',
+                    'p-4',
+                    'shadow-sm',
+                    'h-[6rem]'
+                ])}
+            >
+                {/* left */}
+                <Popover width={100} position="bottom" withArrow shadow="sm">
+                    <Popover.Target>
+                        <Button 
+                            size="sm" 
+                            variant="subtle" 
+                            className="px-1"
+                            rightIcon={ <IconDotsVertical size="1rem" /> }
+                        >
+                            Jomunn AI 助理
+                        </Button>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        <Link href="/assistant">助理管理</Link>
+                    </Popover.Dropdown>
+                </Popover>
+                {/* right */}
+                <div>選擇助理</div>
+            </div>
+            {/* message content */}
             <div className="w-3/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto scrollbar-none rounded-sm">
                 {
                     message.map((item, idx) => {

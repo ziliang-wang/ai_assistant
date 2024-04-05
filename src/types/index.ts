@@ -12,8 +12,13 @@ export type MessageList = Message[];
 // 多個session
 export type Session = {
     name: string;
+    assistant: string;
     id: string;
 };
+
+export type SessionInfo = Omit<Session, 'assistant'> & {
+    assistant: Assistant
+}
 
 export type SessionList = Session[];
 
@@ -44,3 +49,5 @@ export type AssistantList = Assistant[];
 
 
 export type EditAssistant = Omit<Assistant, 'id'> & Partial<Pick<Assistant, 'id'>>;
+
+

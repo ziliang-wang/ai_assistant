@@ -86,7 +86,7 @@ const Assistant: NextPage = () => {
                 </Link>
                 {/* middle */}
                 <Text weight={500} size="lg">
-                    Jomunn AI助理
+                    Jomunn AI 助理管理
                 </Text>
                 {/* right */}
                 <ActionIcon onClick={ onAddAssistant }>
