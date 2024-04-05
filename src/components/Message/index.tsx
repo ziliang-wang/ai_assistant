@@ -191,7 +191,7 @@ export const Message = ({sessionId}: Props) => {
     };
 
     return (
-        <div className="h-screen flex flex-col w-full bg-slate-200">
+        <div className="h-screen flex flex-col w-full bg-slate-200 pb-2">
             {/* header */}
             <div 
                 className={clsx([
@@ -230,7 +230,7 @@ export const Message = ({sessionId}: Props) => {
                 ></AssistantSelect>
             </div>
             {/* message content */}
-            <div className="mx-auto w-4/5 h-[calc(100vh-7rem)] flex-col overflow-y-auto scrollbar-none rounded-sm">
+            <div className="overflow-y-auto mx-auto w-4/5 h-[calc(100vh-7rem)] flex-col rounded-sm">
                 {
                     message.map((item, idx) => {
                         return (
