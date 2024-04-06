@@ -273,7 +273,7 @@ export const Message = ({sessionId}: Props) => {
                                             }}>
                                         {item.role == 'assistant' ? <IconAlien /> : <IconUser />}
                                     </div>
-                                    <div  style={{ width: item.role == 'assistant' ? '50%' : '90%'  }} className="rounded-md py-2 mt-1 px-2 w-full bg-blue-200">
+                                    <div style={{ width: item.role == 'user' ? '100%' : '100%'  }} className="shadow-md rounded-md py-2 mt-1 px-2 w-full md:w-[50%] bg-blue-200">
                                         {item.content}
                                     </div>
                                 </div>
