@@ -94,7 +94,7 @@ const Assistant: NextPage = () => {
                 </ActionIcon>
              </div>
              {/* body */}
-             <div className="flex gap-8 flex-wrap p-4 overflow-y-auto mx-auto">
+             <div className="flex gap-8 flex-wrap p-4 overflow-y-auto">
                 {
                     assistantList.map((item) => {
                         return (
