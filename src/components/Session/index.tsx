@@ -136,7 +136,8 @@ export const Session = ({ sessionId, onChange, className }: Props) => {
             </div>
             {/* <h6 className="bg-blue-200"></h6> */}
             <ul className="text-white">
-                <li>雙擊任一會話可修改會話名稱，Enter後保存</li>
+                <li>點擊最上方的+，可新增聊天室</li>
+                <li className="mt-3">雙擊任一聊天室可修改聊天室的名稱，Enter後保存</li>
             </ul>
         </div>
     );
