@@ -1,4 +1,4 @@
-import { useEffect, useState, KeyboardEvent } from "react";
+import { useEffect, useState, KeyboardEvent, useRef } from "react";
 import { Assistant, MessageList } from "@/types";
 // import { ChatLogsType } from "@/types";
 import * as chatStorage from "@/utils/ChatStorage";
@@ -174,6 +174,19 @@ export const Message = ({sessionId}: Props) => {
 
     //     setLoading(false);
     // };
+
+    let msgScrollTop: number;
+    const messageRef: any = useRef(null);
+    const itemRef: any = useRef(null);
+    const inputRef: any = useRef(null);
+
+    useEffect(() => {
+        msgScrollTop = itemRef.current?.offsetTop || 0;
+        messageRef.current.scrollTop = msgScrollTop;
+        inputRef.current.focus();
+    });
+
+
     const onSubmit = () => {
 
         if (loading) {
@@ -243,7 +256,7 @@ export const Message = ({sessionId}: Props) => {
                 ></AssistantSelect>
             </div>
             {/* message content */}
-            <div className="h-[calc(100vh-4rem)] overflow-y-auto mx-auto w-[90%] md:w-5/6 flex-col rounded-sm">
+            <div ref={messageRef} className="h-[calc(100vh-4rem)] overflow-y-auto mx-auto w-[90%] md:w-5/6 flex-col rounded-sm">
                 {
                     message.map((item, idx) => {
                         return (
@@ -273,7 +286,7 @@ export const Message = ({sessionId}: Props) => {
                                             }}>
                                         {item.role == 'assistant' ? <IconAlien /> : <IconUser />}
                                     </div>
-                                    <div className="shadow-md rounded-md py-2 mt-1 px-2 w-full bg-blue-200">
+                                    <div ref={itemRef} className="shadow-md rounded-md py-2 mt-1 px-2 w-full bg-blue-200">
                                         {item.content}
                                     </div>
                                 </div>
@@ -287,6 +300,7 @@ export const Message = ({sessionId}: Props) => {
                     <IconEraser size={50}></IconEraser>
                 </ActionIcon>
                 <Textarea
+                    ref={inputRef}
                     disabled={loading}
                     placeholder="Enter your prompt"
                     className="w-full"
