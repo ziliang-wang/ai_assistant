@@ -256,7 +256,7 @@ export const Message = ({sessionId}: Props) => {
                 ></AssistantSelect>
             </div>
             {/* message content */}
-            <div ref={messageRef} className="h-[calc(100vh-12rem)] overflow-y-auto mx-auto w-[90%] md:w-5/6 flex-col rounded-sm">
+            <div ref={messageRef} className="h-[calc(100vh-10rem)] overflow-y-auto mx-auto w-[90%] md:w-5/6 flex-col rounded-sm">
                 {
                     message.map((item, idx) => {
                         return (
