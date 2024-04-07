@@ -307,7 +307,6 @@ export const Message = ({sessionId}: Props) => {
                     value={prompt}
                     onChange={(e) => { setPrompt(e.target.value); }}
                     onKeyDown={onKeyDown}
-                    adjust-position="true"
                 >
                 </Textarea>
                 {/* <ActionIcon className="ml-2" onClick={ onSubmit } loading={loading}> */}
