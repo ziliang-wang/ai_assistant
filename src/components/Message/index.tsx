@@ -217,7 +217,7 @@ export const Message = ({sessionId}: Props) => {
     };
 
     return (
-        <div className="h-[calc(100vh-5rem)] md:h-[100vh] flex flex-col w-full bg-slate-200 pb-2">
+        <div className="h-[calc(100vh-4rem)] md:h-[100vh] flex flex-col w-full bg-slate-200 pb-2">
             {/* header */}
             <div 
                 className={clsx([
