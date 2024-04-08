@@ -1,3 +1,29 @@
+Bugs fixed record:
+
+1,
+發現的問題是，message的頁面在每次render後，scrollbar 無法自動往下，
+
+而且讓用戶輸入的input，也必須每次自動獲得焦點會好一點，
+
+修正思路是，取得相關的dom元素，做scrollTop和focus()的操作即可，
+
+以下為修正bug的程式碼：
+
+![image](https://github.com/ziliang-wang/ai_assistant/assets/56996180/83bd3adb-4f98-4933-90b0-3d22549c340e)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
