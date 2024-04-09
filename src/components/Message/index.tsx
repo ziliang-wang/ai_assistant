@@ -178,12 +178,12 @@ export const Message = ({sessionId}: Props) => {
     let msgScrollTop: number;
     const messageRef: any = useRef(null);
     const itemRef: any = useRef(null);
-    // const inputRef: any = useRef(null);
+    const inputRef: any = useRef(null);
 
     useEffect(() => {
         msgScrollTop = itemRef.current?.offsetTop || 0;
         messageRef.current.scrollTop = msgScrollTop;
-        // inputRef.current.focus();
+        inputRef.current.focus();
     });
 
 
@@ -300,7 +300,7 @@ export const Message = ({sessionId}: Props) => {
                     <IconEraser size={50}></IconEraser>
                 </ActionIcon>
                 <Textarea
-                    // ref={inputRef}
+                    ref={inputRef}
                     disabled={loading}
                     placeholder="Enter your prompt"
                     className="w-full"
