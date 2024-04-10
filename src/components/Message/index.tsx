@@ -298,8 +298,9 @@ export const Message = ({sessionId}: Props) => {
                                             w-[10%] 
                                             mx-auto 
                                             text-center 
-                                            p-1 
-                                            text-sm 
+                                            p-1
+                                            text-[12px]
+                                            md:text-sm 
                                             mt-3 
                                             rounded-xl 
                                             bg-white"
