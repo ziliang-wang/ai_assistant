@@ -1,3 +1,15 @@
+近看過在類似的應用里，AI回覆進行式，會有Stop按鈕，功能是停止串流輸出，
+
+從善如流，於是也在Jomuunn專案里，加入類似的功能，
+
+在JSX里，新增以下程式碼，達到預期效果：
+
+![image](https://github.com/ziliang-wang/ai_assistant/assets/56996180/20f6bba2-92ab-4159-b8ae-afb685de17a6)
+
+其中，chatService.cancel()方法，是我之前另外封裝的，其實就是內建的實例物件，用來停止網路請求。
+
+new AbortController();
+
 Bugs fixed record:
 
 1,
