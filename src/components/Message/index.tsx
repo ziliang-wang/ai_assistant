@@ -290,6 +290,12 @@ export const Message = ({sessionId}: Props) => {
                                         {item.content}
                                     </div>
                                 </div>
+                                {item.role == 'assistant' ? 
+                                    <div onClick={() => { chatService.cancel(); }} className="cursor-pointer w-[10%] mx-auto text-center p-1 text-sm mt-3 rounded-xl bg-white">
+                                        停止
+                                    </div> 
+                                    : null
+                                }                  
                             </div>
                         );
                     })
