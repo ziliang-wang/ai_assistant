@@ -290,8 +290,8 @@ export const Message = ({sessionId}: Props) => {
                                         {item.content}
                                     </div>
                                 </div>
-                                { item.role == 'assistant' && idx === message.length - 1 ? 
-                                    <div 
+                                { item.role == 'assistant' && idx === message.length - 1 && loading ? 
+                                    <div    
                                         onClick={() => { chatService.cancel(); }} 
                                         className="
                                             cursor-pointer 
