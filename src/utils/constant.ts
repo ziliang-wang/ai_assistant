@@ -12,6 +12,8 @@ export const ASSISTANT_INIT = [
     }
 ];
 
+export const OPENAI_END_POINT = "https://api.openai.com";
+// export const OPENAI_END_POINT = "https://api.openai.com";
 
 export const MAX_TOKEN = 1000;
 export const TEMPERATURE = 0.8;

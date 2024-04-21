@@ -7,9 +7,10 @@ import * as chatStorage from "@/utils/ChatStorage";
 import chatService from "@/utils/chatServe";
 // import { getCompletion } from "@/utils/getCompletion";
 import { Textarea, ActionIcon, Button, Popover } from "@mantine/core";
-import { IconSend, IconEraser, IconSendOff, IconDotsVertical, IconUser, IconAlien } from "@tabler/icons-react";
+import { IconSend, IconEraser, IconSendOff, IconDotsVertical, IconUser, IconAlien, IconHeadphones, IconHeadphonesOff } from "@tabler/icons-react";
 import Link from "next/link";
 import clsx from "clsx";
+import { Voice } from "../Voice";
 import { AssistantSelect } from "../AssistantSelect";
 import { notifications } from "@mantine/notifications";
 
@@ -31,7 +32,7 @@ type Props = {
     sessionId: string;
 };
 
-export const Message = ({sessionId}: Props) => {
+export const Message = ({ sessionId }: Props) => {
 
     const [prompt, setPrompt] = useState('');
 
@@ -42,7 +43,9 @@ export const Message = ({sessionId}: Props) => {
     const [message, setMessage] = useState<MessageList>([]);
     // const [chatList, setChatList] = useState<MessageList>([]);
     // const [ chatList, setChatList ] = useState<ChatLogsType>([]);
-    const [ assistant, setAssistant ] = useState<Assistant>();
+    const [assistant, setAssistant] = useState<Assistant>();
+
+    const [mode, setMode] = useState<"text" | "voice">("text");
 
     const updateMessage = (msg: MessageList) => {
         setMessage(msg);
@@ -65,12 +68,12 @@ export const Message = ({sessionId}: Props) => {
         // const logs = getMessage(sessionId);
         // const logs = getChatLogs(sessionId);
         setMessage(msg);
-        
+
         if (loading) {
             chatService.cancel();
         }
 
-    }, [sessionId]);
+    }, [sessionId, mode]);
 
     const onAssistantChange = (assistant: Assistant) => {
         setAssistant(assistant);
@@ -181,9 +184,12 @@ export const Message = ({sessionId}: Props) => {
     const inputRef: any = useRef(null);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         msgScrollTop = itemRef.current?.offsetTop || 0;
-        messageRef.current.scrollTop = msgScrollTop;
-        inputRef.current.focus();
+        if (messageRef.current) {
+            messageRef.current!.scrollTop = msgScrollTop;
+            inputRef.current.focus();
+        }
     });
 
 
@@ -219,10 +225,11 @@ export const Message = ({sessionId}: Props) => {
     return (
         <div className="h-[100vh] flex flex-col w-full bg-slate-200 pb-2">
             {/* header */}
-            <div 
+            <div
                 className={clsx([
                     'flex',
                     'justify-between',
+                    // 'md:justify-around',
                     'items-center',
                     'p-4',
                     'shadow-sm',
@@ -232,16 +239,16 @@ export const Message = ({sessionId}: Props) => {
                 {/* left */}
                 <Popover width={100} position="bottom" withArrow shadow="sm">
                     <Popover.Target>
-                    <Link href="/assistant">
-                        <Button 
-                            size="sm" 
-                            variant="subtle" 
-                            className="px-1"
-                            rightIcon={ <IconDotsVertical size="1rem" /> }
-                        >
-                            Jomunn AI 助理管理
-                        </Button>
-                    </Link>
+                        <Link href="/assistant">
+                            <Button
+                                size="sm"
+                                variant="subtle"
+                                className="px-1"
+                                rightIcon={<IconDotsVertical size="1rem" />}
+                            >
+                                Jomunn AI 助理管理
+                            </Button>
+                        </Link>
                     </Popover.Target>
                     {/* <Popover.Dropdown>
                         <Link href="/assistant">助理管理</Link>
@@ -249,97 +256,116 @@ export const Message = ({sessionId}: Props) => {
                 </Popover>
                 {/* center */}
                 {/* <div>Welcome to Jomunn AI</div> */}
+                {/* middle */}
+                <div className="flex items-center">
+                    <AssistantSelect
+                        value={assistant?.id!}
+                        onChange={onAssistantChange}
+                    ></AssistantSelect>
+                    <ActionIcon size="sm" className="hover:bg-transparent" onClick={() => setMode(mode === 'text' ? 'voice' : 'text')}>
+                        {mode === "text" ? (
+                            <IconHeadphones color="green" size="2rem"></IconHeadphones>
+                        ) : (
+                            <IconHeadphonesOff color="red" size="2rem"></IconHeadphonesOff>
+                        )}
+                    </ActionIcon>
+                </div>
                 {/* right */}
-                <AssistantSelect
-                    value={ assistant?.id! }
-                    onChange={ onAssistantChange } 
-                ></AssistantSelect>
+                <div className="hidden md:block md:font-bold">
+                    GPT-3.5 Turbo
+                </div>
             </div>
-            {/* message content */}
-            <div ref={messageRef} className="h-[calc(100vh-4rem)] overflow-y-auto mx-auto w-[90%] md:w-5/6 flex-col rounded-sm">
-                {
-                    message.map((item, idx) => {
-                        return (
-                            <div key={`${item.role}-${idx}`}
-                                style={
-                                    {
-                                        display: item.role === 'user' ? 'flex' : 'block',
-                                        flexDirection: item.role === 'user' ? 'column' : 'column',
-                                        alignItems: item.role === 'user' ? 'flex-end' : 'flex-start',
-                                        marginTop: '1rem',
-                                        textAlign: item.role === 'user' ? 'right' : 'left',
+            {mode === 'text' ?
+                <>
+                    {/* message content */}
+                    <div ref={messageRef} className="h-[calc(100vh-4rem)] overflow-y-auto mx-auto w-[90%] md:w-5/6 flex-col rounded-sm">
+                        {
+                            message.map((item, idx) => {
+                                return (
+                                    <div key={`${item.role}-${idx}`}
+                                        style={
+                                            {
+                                                display: item.role === 'user' ? 'flex' : 'block',
+                                                flexDirection: item.role === 'user' ? 'column' : 'column',
+                                                alignItems: item.role === 'user' ? 'flex-end' : 'flex-start',
+                                                marginTop: '1rem',
+                                                textAlign: item.role === 'user' ? 'right' : 'left',
 
-                                    }
-                                }
-                            //  className={clsx({
-                            //         flex: item.role === 'user',
-                            //         'flex-col': item.role === 'user',
-                            //         'items-end': item.role === 'user'
-                            //         },'mt-4')}
-                            >
-                                <div className="flex items-center">
-                                    <div 
-                                        style={{ 
-                                                order: item.role == 'user' ? 1 : 0, 
-                                                marginRight: item.role == 'assistant' ? '.5rem' : 0,
-                                                marginLeft: item.role == 'user' ? '.5rem' : 0
-                                            }}>
-                                        {item.role == 'assistant' ? <IconAlien /> : <IconUser />}
+                                            }
+                                        }
+                                    //  className={clsx({
+                                    //         flex: item.role === 'user',
+                                    //         'flex-col': item.role === 'user',
+                                    //         'items-end': item.role === 'user'
+                                    //         },'mt-4')}
+                                    >
+                                        <div className="flex items-center">
+                                            <div
+                                                style={{
+                                                    order: item.role == 'user' ? 1 : 0,
+                                                    marginRight: item.role == 'assistant' ? '.5rem' : 0,
+                                                    marginLeft: item.role == 'user' ? '.5rem' : 0
+                                                }}>
+                                                {item.role == 'assistant' ? <IconAlien /> : <IconUser />}
+                                            </div>
+                                            <div ref={itemRef} className="shadow-md rounded-md py-2 mt-1 px-2 w-full bg-blue-200">
+                                                {item.content}
+                                            </div>
+                                        </div>
+                                        {item.role == 'assistant' && idx === message.length - 1 && loading ?
+                                            <div
+                                                onClick={() => { chatService.cancel(); }}
+                                                className="
+                                                    cursor-pointer 
+                                                    w-[10%] 
+                                                    mx-auto 
+                                                    text-center 
+                                                    p-1
+                                                    text-[12px]
+                                                    md:text-sm 
+                                                    mt-3 
+                                                    rounded-xl 
+                                                    bg-white"
+                                            >
+                                                停止
+                                            </div>
+                                            : null
+                                        }
                                     </div>
-                                    <div ref={itemRef} className="shadow-md rounded-md py-2 mt-1 px-2 w-full bg-blue-200">
-                                        {item.content}
-                                    </div>
-                                </div>
-                                { item.role == 'assistant' && idx === message.length - 1 && loading ? 
-                                    <div    
-                                        onClick={() => { chatService.cancel(); }} 
-                                        className="
-                                            cursor-pointer 
-                                            w-[10%] 
-                                            mx-auto 
-                                            text-center 
-                                            p-1
-                                            text-[12px]
-                                            md:text-sm 
-                                            mt-3 
-                                            rounded-xl 
-                                            bg-white"
-                                        >
-                                        停止
-                                    </div> 
-                                    : null
-                                }                  
-                            </div>
-                        );
-                    })
-                }
-            </div>
-            <div className="mx-auto flex items-center w-[90%] md:w-5/6 mt-6">
-                <ActionIcon className="mr-2" onClick={onClear} disabled={loading}>
-                    <IconEraser size={50}></IconEraser>
-                </ActionIcon>
-                <Textarea
-                    ref={inputRef}
-                    disabled={loading}
-                    placeholder="Enter your prompt"
-                    className="w-full"
-                    value={prompt}
-                    onChange={(e) => { setPrompt(e.target.value); }}
-                    onKeyDown={onKeyDown}
-                >
-                </Textarea>
-                {/* <ActionIcon className="ml-2" onClick={ onSubmit } loading={loading}> */}
-                <ActionIcon className="ml-2" onClick={ onSubmit }>
-                    {
-                        loading ? <IconSendOff /> : <IconSend size={50} />
-                    }
-                    {/* <IconSend size={50}></IconSend> */}
-                </ActionIcon>
-                {/* <ActionIcon className="ml-2" onClick={getAIResp} loading={loading}>
-                    <IconSend size={50}></IconSend>
-                </ActionIcon> */}
-                {/* <Button onClick={ getAIResp }>Send</Button> */}
-            </div>
+                                );
+                            })
+                        }
+                    </div>
+                    <div className="mx-auto flex items-center w-[90%] md:w-5/6 mt-6">
+                        <ActionIcon className="mr-2" onClick={onClear} disabled={loading}>
+                            <IconEraser size={50}></IconEraser>
+                        </ActionIcon>
+                        <Textarea
+                            ref={inputRef}
+                            disabled={loading}
+                            placeholder="Enter your prompt"
+                            className="w-full"
+                            value={prompt}
+                            onChange={(e) => { setPrompt(e.target.value); }}
+                            onKeyDown={onKeyDown}
+                        >
+                        </Textarea>
+                        {/* <ActionIcon className="ml-2" onClick={ onSubmit } loading={loading}> */}
+                        <ActionIcon className="ml-2" onClick={onSubmit}>
+                            {
+                                loading ? <IconSendOff /> : <IconSend size={50} />
+                            }
+                            {/* <IconSend size={50}></IconSend> */}
+                        </ActionIcon>
+                        {/* <ActionIcon className="ml-2" onClick={getAIResp} loading={loading}>
+                            <IconSend size={50}></IconSend>
+                        </ActionIcon> */}
+                        {/* <Button onClick={ getAIResp }>Send</Button> */}
+                    </div>
+                </>
+                : <Voice sessionId={sessionId} assistant={assistant!}></Voice>
+                // : <Voice></Voice>
+            }
         </div>
     );
 };

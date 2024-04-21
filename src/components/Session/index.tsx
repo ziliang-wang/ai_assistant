@@ -138,6 +138,7 @@ export const Session = ({ sessionId, onChange, className }: Props) => {
             <ul className="text-white">
                 <li>點擊最上方的+，可新增聊天室</li>
                 <li className="mt-3">雙擊任一聊天室可修改聊天室的名稱，Enter後保存</li>
+                <li className="mt-3">點擊導航條的耳機，可以和我說話喔^^</li>
             </ul>
         </div>
     );
